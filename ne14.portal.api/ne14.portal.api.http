@@ -1,0 +1,6 @@
+@ne14.portal.api_HostAddress = http://localhost:5249
+
+GET {{ne14.portal.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
