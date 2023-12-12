@@ -5,7 +5,12 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ne14.portal.api", "ne14.portal.api\ne14.portal.api.csproj", "{65214160-DEDD-419A-AAD7-524BF64512A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ne14.portal.business", "ne14.portal.business\ne14.portal.business.csproj", "{AE8612B8-D4CB-433F-A150-AECB235CB82A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ne14.portal.business", "ne14.portal.business\ne14.portal.business.csproj", "{AE8612B8-D4CB-433F-A150-AECB235CB82A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{720545DB-3BEC-4EAA-8B81-CB6D842559D1}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,8 +9,9 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["ne14.portal.business/ne14.portal.business.csproj", "ne14.portal.business/"]
 COPY ["ne14.portal.api/ne14.portal.api.csproj", "ne14.portal.api/"]
-RUN dotnet restore "./ne14.portal.api/./ne14.portal.api.csproj"
+RUN --mount=type=secret,id=nuget_config_file dotnet restore "./ne14.portal.api/./ne14.portal.api.csproj" --configfile "/run/secrets/nuget_config_file"
 COPY . .
 WORKDIR "/src/ne14.portal.api"
 RUN dotnet build "./ne14.portal.api.csproj" -c $BUILD_CONFIGURATION -o /app/build

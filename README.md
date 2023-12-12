@@ -10,3 +10,10 @@ gci **/TestResults/ | ri -r; dotnet test -c Release -s .runsettings; dotnet repo
 # Run mutation tests and show report
 gci **/StrykerOutput/ | ri -r; dotnet stryker -o;
 ```
+
+## build docker image
+``` bash
+# The following command passes a sensitive file as a secret to the docker build process (one-time secrets; not needed at run time)
+# In this case, it contains the github PAT token to read packages from the private feed :)
+docker build -f ".\ne14.portal.api\Dockerfile" --force-rm --tag portalapi --secret id=nuget_config_file,src="C:\temp\nuget-docker.golden-path.config" .
+```
