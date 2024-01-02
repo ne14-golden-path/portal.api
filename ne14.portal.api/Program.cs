@@ -2,8 +2,9 @@
 // Copyright (c) ne1410s. All rights reserved.
 // </copyright>
 
-using ne14.library.startup_extensions;
+using ne14.library.startup_extensions.Extensions;
 using ne14.library.startup_extensions.Telemetry;
+using ne14.portal.business;
 
 [assembly: TraceThis]
 
@@ -13,7 +14,14 @@ builder.Services.AddEnterpriseDiscovery();
 builder.Services.AddEnterpriseErrorHandling();
 builder.Services.AddEnterpriseHealthChecks();
 builder.Services.AddEnterpriseTelemetry(builder.Configuration);
+builder.Services.AddEnterpriseMq(builder.Configuration);
+builder.Services.AddMqProducer<PdfConversionRequiredProducer>();
+builder.Services.AddMqConsumer<PdfConversionSucceededConsumer>();
+builder.Services.AddMqConsumer<PdfConversionFailedConsumer>();
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IBlobRepository, StubBlobRepository>();
+builder.Services.AddScoped<PdfDomainService>();
 
 var app = builder.Build();
 app.UseEnterpriseCors();
