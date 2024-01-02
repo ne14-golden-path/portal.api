@@ -21,7 +21,7 @@ public class PdfConversionSucceededConsumer(
         : TracedMqConsumer<PdfConversionSucceededMessage>(session, telemeter, logger)
 {
     /// <inheritdoc/>
-    public override string ExchangeName => "pdf-conversion-failed";
+    public override string ExchangeName => "pdf-conversion-succeeded";
 
     /// <inheritdoc/>
     public override Task Consume(PdfConversionSucceededMessage message, ConsumerContext context)
