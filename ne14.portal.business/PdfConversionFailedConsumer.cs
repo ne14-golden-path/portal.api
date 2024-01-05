@@ -5,6 +5,7 @@
 namespace ne14.portal.business;
 
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
 using ne14.library.rabbitmq.Consumer;
@@ -17,8 +18,9 @@ using ne14.library.startup_extensions.Telemetry;
 public class PdfConversionFailedConsumer(
     IRabbitMqSession session,
     ITelemeter telemeter,
-    ILogger<PdfConversionFailedConsumer> logger)
-        : TracedMqConsumer<PdfConversionFailedMessage>(session, telemeter, logger)
+    ILogger<PdfConversionFailedConsumer> logger,
+    IConfiguration config)
+        : TracedMqConsumer<PdfConversionFailedMessage>(session, telemeter, logger, config)
 {
     /// <inheritdoc/>
     public override string ExchangeName => "pdf-conversion-failed";

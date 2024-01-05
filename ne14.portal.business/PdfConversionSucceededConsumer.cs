@@ -5,6 +5,7 @@
 namespace ne14.portal.business;
 
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
 using ne14.library.rabbitmq.Consumer;
@@ -17,8 +18,9 @@ using ne14.library.startup_extensions.Telemetry;
 public class PdfConversionSucceededConsumer(
     IRabbitMqSession session,
     ITelemeter telemeter,
-    ILogger<PdfConversionSucceededConsumer> logger)
-        : TracedMqConsumer<PdfConversionSucceededMessage>(session, telemeter, logger)
+    ILogger<PdfConversionSucceededConsumer> logger,
+    IConfiguration config)
+        : TracedMqConsumer<PdfConversionSucceededMessage>(session, telemeter, logger, config)
 {
     /// <inheritdoc/>
     public override string ExchangeName => "pdf-conversion-succeeded";
