@@ -6,16 +6,16 @@ namespace ne14.portal.business;
 
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
-using ne14.library.rabbitmq.Vendor;
 using ne14.library.startup_extensions.Mq;
 using ne14.library.startup_extensions.Telemetry;
+using RabbitMQ.Client;
 
-/// <inheritdoc cref="TracedMqProducer{T}"/>
+/// <inheritdoc cref="MqTracingProducer{T}"/>
 public class PdfConversionRequiredProducer(
-    IRabbitMqSession session,
+    IConnectionFactory session,
     ITelemeter telemeter,
     ILogger<PdfConversionRequiredProducer> logger)
-        : TracedMqProducer<PdfConversionRequiredMessage>(session, telemeter, logger)
+        : MqTracingProducer<PdfConversionRequiredMessage>(session, telemeter, logger)
 {
     /// <inheritdoc/>
     public override string ExchangeName => "pdf-conversion-required";

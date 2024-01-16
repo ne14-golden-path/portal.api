@@ -8,28 +8,27 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
-using ne14.library.rabbitmq.Consumer;
-using ne14.library.rabbitmq.Exceptions;
-using ne14.library.rabbitmq.Vendor;
+using ne14.library.messaging.Abstractions.Consumer;
 using ne14.library.startup_extensions.Mq;
 using ne14.library.startup_extensions.Telemetry;
+using RabbitMQ.Client;
 
-/// <inheritdoc cref="TracedMqConsumer{T}"/>
+/// <inheritdoc cref="MqTracingConsumer{T}"/>
 public class PdfConversionSucceededConsumer(
-    IRabbitMqSession session,
+    IConnectionFactory connectionFactory,
     ITelemeter telemeter,
     ILogger<PdfConversionSucceededConsumer> logger,
     IConfiguration config)
-        : TracedMqConsumer<PdfConversionSucceededMessage>(session, telemeter, logger, config)
+        : MqTracingConsumer<PdfConversionSucceededMessage>(connectionFactory, telemeter, logger, config)
 {
     /// <inheritdoc/>
     public override string ExchangeName => "pdf-conversion-succeeded";
 
     /// <inheritdoc/>
-    public override Task Consume(PdfConversionSucceededMessage message, ConsumerContext context)
+    public override Task ConsumeAsync(PdfConversionSucceededMessage message, MqConsumerEventArgs args)
     {
         message = message ?? throw new PermanentFailureException();
-        this.Logger.LogInformation(
+        logger.LogInformation(
             "API CONSUMER REPORTED PDF CONVERSION SUCCESS: {OldRef} -> {NewRef}",
             message.InboundBlobReference,
             message.OutboundBlobReference);

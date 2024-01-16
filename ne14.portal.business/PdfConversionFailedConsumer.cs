@@ -8,28 +8,30 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
-using ne14.library.rabbitmq.Consumer;
-using ne14.library.rabbitmq.Exceptions;
-using ne14.library.rabbitmq.Vendor;
+using ne14.library.messaging.Abstractions.Consumer;
 using ne14.library.startup_extensions.Mq;
 using ne14.library.startup_extensions.Telemetry;
+using RabbitMQ.Client;
 
-/// <inheritdoc cref="TracedMqConsumer{T}"/>
+/// <inheritdoc cref="MqTracingConsumer{T}"/>
 public class PdfConversionFailedConsumer(
-    IRabbitMqSession session,
+    IConnectionFactory connectionFactory,
     ITelemeter telemeter,
     ILogger<PdfConversionFailedConsumer> logger,
     IConfiguration config)
-        : TracedMqConsumer<PdfConversionFailedMessage>(session, telemeter, logger, config)
+        : MqTracingConsumer<PdfConversionFailedMessage>(connectionFactory, telemeter, logger, config)
 {
     /// <inheritdoc/>
     public override string ExchangeName => "pdf-conversion-failed";
 
     /// <inheritdoc/>
-    public override Task Consume(PdfConversionFailedMessage message, ConsumerContext context)
+    public override Task ConsumeAsync(PdfConversionFailedMessage message, MqConsumerEventArgs args)
     {
         message = message ?? throw new PermanentFailureException();
-        this.Logger.LogWarning("API CONSUMER REPORTED PDF CONVERSION FAILURE: {Id}", message.InboundBlobReference);
+
+        throw new ArithmeticException("lulz");
+
+        logger.LogWarning("API CONSUMER REPORTED PDF CONVERSION FAILURE: {Id}", message.InboundBlobReference);
         return Task.CompletedTask;
     }
 }
