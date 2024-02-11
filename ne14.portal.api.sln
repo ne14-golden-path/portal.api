@@ -12,10 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{720545DB
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ne14.library.startup_extensions", "..\library.startup_extensions\ne14.library.startup_extensions\ne14.library.startup_extensions.csproj", "{02105C8E-8B3C-41BF-ACD4-38ADD15BE56F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ne14.library.messaging", "..\library.startup_extensions\ne14.library.messaging\ne14.library.messaging.csproj", "{B4DD2B41-37DD-417F-858F-26D4F8A18409}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,14 +26,6 @@ Global
 		{AE8612B8-D4CB-433F-A150-AECB235CB82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE8612B8-D4CB-433F-A150-AECB235CB82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE8612B8-D4CB-433F-A150-AECB235CB82A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02105C8E-8B3C-41BF-ACD4-38ADD15BE56F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02105C8E-8B3C-41BF-ACD4-38ADD15BE56F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02105C8E-8B3C-41BF-ACD4-38ADD15BE56F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02105C8E-8B3C-41BF-ACD4-38ADD15BE56F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4DD2B41-37DD-417F-858F-26D4F8A18409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4DD2B41-37DD-417F-858F-26D4F8A18409}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4DD2B41-37DD-417F-858F-26D4F8A18409}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4DD2B41-37DD-417F-858F-26D4F8A18409}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
