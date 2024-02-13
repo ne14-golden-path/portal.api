@@ -15,6 +15,7 @@ using RabbitMQ.Client;
 
 /// <inheritdoc cref="MqTracingConsumer{T}"/>
 public class PdfConversionSucceededConsumer(
+    INotificationService notifier,
     IConnectionFactory connectionFactory,
     ITelemeter telemeter,
     ILogger<PdfConversionSucceededConsumer> logger,
@@ -25,13 +26,13 @@ public class PdfConversionSucceededConsumer(
     public override string ExchangeName => "pdf-conversion-succeeded";
 
     /// <inheritdoc/>
-    public override Task ConsumeAsync(PdfConversionSucceededMessage message, MqConsumerEventArgs args)
+    public override async Task ConsumeAsync(PdfConversionSucceededMessage message, MqConsumerEventArgs args)
     {
-        message = message ?? throw new PermanentFailureException();
         logger.LogInformation(
             "API CONSUMER REPORTED PDF CONVERSION SUCCESS: {OldRef} -> {NewRef}",
             message.InboundBlobReference,
             message.OutboundBlobReference);
-        return Task.CompletedTask;
+
+        await notifier.NotifyAsync(Guid.NewGuid(), $"Upload success!: {message.InboundBlobReference}");
     }
 }

@@ -15,6 +15,7 @@ using RabbitMQ.Client;
 
 /// <inheritdoc cref="MqTracingConsumer{T}"/>
 public class PdfConversionFailedConsumer(
+    INotificationService notifier,
     IConnectionFactory connectionFactory,
     ITelemeter telemeter,
     ILogger<PdfConversionFailedConsumer> logger,
@@ -25,13 +26,9 @@ public class PdfConversionFailedConsumer(
     public override string ExchangeName => "pdf-conversion-failed";
 
     /// <inheritdoc/>
-    public override Task ConsumeAsync(PdfConversionFailedMessage message, MqConsumerEventArgs args)
+    public override async Task ConsumeAsync(PdfConversionFailedMessage message, MqConsumerEventArgs args)
     {
-        message = message ?? throw new PermanentFailureException();
-
-        throw new ArithmeticException("lulz");
-
         logger.LogWarning("API CONSUMER REPORTED PDF CONVERSION FAILURE: {Id}", message.InboundBlobReference);
-        return Task.CompletedTask;
+        await notifier.NotifyAsync(Guid.NewGuid(), $"Failed to upload: {message.FailureReason}");
     }
 }

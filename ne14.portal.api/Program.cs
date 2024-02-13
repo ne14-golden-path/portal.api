@@ -21,6 +21,7 @@ builder.Services.AddMqConsumer<PdfConversionFailedConsumer>();
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IBlobRepository, StubBlobRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<PdfDomainService>();
 
 var app = builder.Build();
