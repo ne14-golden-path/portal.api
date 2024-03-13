@@ -2,6 +2,7 @@
 // Copyright (c) ne1410s. All rights reserved.
 // </copyright>
 
+using Microsoft.Extensions.Azure;
 using ne14.library.startup_extensions.Extensions;
 using ne14.library.startup_extensions.Telemetry;
 using ne14.portal.business;
@@ -20,7 +21,9 @@ builder.Services.AddMqConsumer<PdfConversionSucceededConsumer>();
 builder.Services.AddMqConsumer<PdfConversionFailedConsumer>();
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IBlobRepository, StubBlobRepository>();
+var storageConnection = builder.Configuration["AzureClients:StorageConnection"];
+builder.Services.AddAzureClients(opts => opts.AddBlobServiceClient(storageConnection));
+builder.Services.AddScoped<IBlobRepository, AzureBlobRepository>();
 builder.Services.AddSingleton<INotificationService, NotificationService>();
 builder.Services.AddScoped<PdfDomainService>();
 

@@ -12,8 +12,9 @@ public interface IBlobRepository
     /// <summary>
     /// Uploads a new blob.
     /// </summary>
-    /// <param name="directory">The upload directory.</param>
-    /// <param name="input">The input.</param>
+    /// <param name="containerName">The container name.</param>
+    /// <param name="fileName">The file name.</param>
+    /// <param name="content">The content type.</param>
     /// <returns>The newly generated id.</returns>
-    public Task<Guid> UploadAsync(string directory, Stream input);
+    public Task<Guid> UploadAsync(string containerName, string fileName, Stream content);
 }

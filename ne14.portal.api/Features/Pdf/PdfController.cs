@@ -25,6 +25,6 @@ public class PdfController(PdfDomainService domainService) : ControllerBase
     {
         file.MustExist();
         await using var str = file.OpenReadStream();
-        return await domainService.UploadToTriage(str);
+        return await domainService.UploadToTriage(str, file.FileName);
     }
 }
