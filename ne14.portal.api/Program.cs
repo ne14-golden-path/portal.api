@@ -21,7 +21,7 @@ builder.Services.AddMqConsumer<PdfConversionSucceededConsumer>();
 builder.Services.AddMqConsumer<PdfConversionFailedConsumer>();
 builder.Services.AddControllers();
 
-var storageConnection = builder.Configuration["AzureClients:StorageConnection"];
+var storageConnection = builder.Configuration["AzureClients:LocalBlob"];
 builder.Services.AddAzureClients(opts => opts.AddBlobServiceClient(storageConnection));
 builder.Services.AddScoped<IBlobRepository, AzureBlobRepository>();
 builder.Services.AddSingleton<INotificationService, NotificationService>();

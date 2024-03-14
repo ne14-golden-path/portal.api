@@ -18,7 +18,7 @@ public class AzureBlobRepository(BlobServiceClient blobService) : IBlobRepositor
         var reference = Guid.NewGuid();
         var blob = container.GetBlobClient(reference.ToString());
         await blob.UploadAsync(content);
-        await blob.SetMetadataAsync(new Dictionary<string, string> { ["fileName"] = fileName });
+        await blob.SetMetadataAsync(new Dictionary<string, string> { ["filename"] = fileName });
 
         return reference;
     }
