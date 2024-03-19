@@ -2,7 +2,7 @@
 // Copyright (c) ne1410s. All rights reserved.
 // </copyright>
 
-namespace ne14.portal.business;
+namespace ne14.portal.business.Signals;
 
 /// <summary>
 /// Notification service.

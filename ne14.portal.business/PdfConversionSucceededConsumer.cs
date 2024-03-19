@@ -11,6 +11,7 @@ using ne14.library.message_contracts.Docs;
 using ne14.library.messaging.Abstractions.Consumer;
 using ne14.library.startup_extensions.Mq;
 using ne14.library.startup_extensions.Telemetry;
+using ne14.portal.business.Signals;
 using RabbitMQ.Client;
 
 /// <inheritdoc cref="MqTracingConsumer{T}"/>
