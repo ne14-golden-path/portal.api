@@ -6,7 +6,7 @@ namespace ne14.portal.business;
 
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using ne14.library.fluent_errors.Extensions;
+using FluentErrors.Extensions;
 
 /// <inheritdoc cref="IBlobRepository"/>
 public class AzureBlobRepository(BlobServiceClient blobService) : IBlobRepository

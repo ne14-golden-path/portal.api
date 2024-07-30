@@ -5,6 +5,7 @@
 namespace ne14.portal.business;
 
 using System.Threading.Tasks;
+using FluentErrors.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
@@ -29,6 +30,7 @@ public class PdfConversionFailedConsumer(
     /// <inheritdoc/>
     public override async Task ConsumeAsync(PdfConversionFailedMessage message, MqConsumerEventArgs args)
     {
+        message.MustExist();
         logger.LogWarning("API CONSUMER REPORTED PDF CONVERSION FAILURE: {Id}", message.InboundBlobReference);
         await notifier.NotifyAsync(Guid.NewGuid(), $"Failed to upload: {message.FailureReason}");
     }

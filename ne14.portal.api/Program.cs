@@ -36,4 +36,4 @@ app.UseEnterpriseErrorHandling();
 app.UseEnterpriseHealthChecks();
 app.MapControllers();
 app.MapHub<SignalNotificationService>("/hub");
-app.Run();
+await app.RunAsync();

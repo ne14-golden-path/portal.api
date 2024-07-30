@@ -4,8 +4,8 @@
 
 namespace ne14.portal.api.Features.Pdf;
 
+using FluentErrors.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using ne14.library.fluent_errors.Extensions;
 using ne14.portal.business;
 
 /// <summary>

@@ -5,6 +5,7 @@
 namespace ne14.portal.business;
 
 using System.Threading.Tasks;
+using FluentErrors.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
@@ -29,6 +30,8 @@ public class PdfConversionSucceededConsumer(
     /// <inheritdoc/>
     public override async Task ConsumeAsync(PdfConversionSucceededMessage message, MqConsumerEventArgs args)
     {
+        message.MustExist();
+
         logger.LogInformation(
             "API CONSUMER REPORTED PDF CONVERSION SUCCESS: {OldRef} -> {NewRef}",
             message.InboundBlobReference,
