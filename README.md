@@ -21,5 +21,5 @@ $suffix="alpha001"; dotnet pack -c Release -o nu --version-suffix $suffix; dotne
 ``` bash
 # The following command passes a sensitive file as a secret to the docker build process (one-time secrets; not needed at run time)
 # In this case, it contains the github PAT token to read packages from the private feed :)
-docker build -f ".\ne14.portal.api\Dockerfile" --force-rm --tag portalapi --secret id=nuget_config_file,src="C:\temp\nuget-docker.golden-path.config" .
+docker build . -t ne1410s/portal.api:0.0.1 -f ".\ne14.portal.api\Dockerfile" --force-rm --secret id=nuget_config_file,src="C:\temp\nuget-docker.golden-path.config" --push
 ```
