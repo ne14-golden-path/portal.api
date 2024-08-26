@@ -4,6 +4,7 @@
 
 namespace ne14.portal.api.Features.Weather;
 
+using EnterpriseStartup.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -11,12 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class WeatherForecastController(ILogger<WeatherForecastController> logger) : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching",
-    };
+    private static readonly string[] Summaries = ["Chilly", "Cool", "Mild", "Warm", "Balmy"];
 
     /// <summary>
     /// Gets a forecast.
@@ -25,6 +23,9 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
+        var user = this.User.ToEnterpriseUser();
+        logger.LogInformation("User {UserId} is getting a forecast!", user.Id);
+
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

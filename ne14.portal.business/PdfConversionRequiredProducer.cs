@@ -4,10 +4,10 @@
 
 namespace ne14.portal.business;
 
+using EnterpriseStartup.Mq;
+using EnterpriseStartup.Telemetry;
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
-using ne14.library.startup_extensions.Mq;
-using ne14.library.startup_extensions.Telemetry;
 using RabbitMQ.Client;
 
 /// <inheritdoc cref="MqTracingProducer{T}"/>

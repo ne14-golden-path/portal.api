@@ -17,13 +17,14 @@ public class PdfDomainService(
     /// Processes document uploads by uploading to a triage account and
     /// notifying the system of the event. The process is automated thereafter.
     /// </summary>
+    /// <param name="userId">The user id.</param>
     /// <param name="input">The input.</param>
     /// <param name="fileName">The file name.</param>
     /// <returns>The temporary triage id.</returns>
-    public async Task<Guid> UploadToTriage(Stream input, string fileName)
+    public async Task<Guid> UploadToTriage(string userId, Stream input, string fileName)
     {
-        var guid = await blobRepo.UploadAsync(TriageContainer, fileName, input);
-        mqProducer.Produce(new(guid));
-        return guid;
+        var blobId = await blobRepo.UploadAsync(TriageContainer, fileName, input);
+        mqProducer.Produce(new(userId, blobId));
+        return blobId;
     }
 }

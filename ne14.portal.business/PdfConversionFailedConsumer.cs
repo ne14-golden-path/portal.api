@@ -5,19 +5,19 @@
 namespace ne14.portal.business;
 
 using System.Threading.Tasks;
+using EnterpriseStartup.Messaging.Abstractions.Consumer;
+using EnterpriseStartup.Mq;
+using EnterpriseStartup.SignalR;
+using EnterpriseStartup.Telemetry;
 using FluentErrors.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ne14.library.message_contracts.Docs;
-using ne14.library.messaging.Abstractions.Consumer;
-using ne14.library.startup_extensions.Mq;
-using ne14.library.startup_extensions.Telemetry;
-using ne14.portal.business.Signals;
 using RabbitMQ.Client;
 
 /// <inheritdoc cref="MqTracingConsumer{T}"/>
 public class PdfConversionFailedConsumer(
-    INotificationService notifier,
+    INotifier notifier,
     IConnectionFactory connectionFactory,
     ITelemeter telemeter,
     ILogger<PdfConversionFailedConsumer> logger,
@@ -31,7 +31,12 @@ public class PdfConversionFailedConsumer(
     public override async Task ConsumeAsync(PdfConversionFailedMessage message, MqConsumerEventArgs args)
     {
         message.MustExist();
+
         logger.LogWarning("API CONSUMER REPORTED PDF CONVERSION FAILURE: {Id}", message.InboundBlobReference);
-        await notifier.NotifyAsync(Guid.NewGuid(), $"Failed to upload: {message.FailureReason}");
+
+        await notifier.Notify(
+            message.UserId,
+            NoticeLevel.Failure,
+            $"Failed to upload: {message.FailureReason}");
     }
 }

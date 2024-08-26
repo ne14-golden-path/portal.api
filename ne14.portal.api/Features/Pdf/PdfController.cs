@@ -4,6 +4,7 @@
 
 namespace ne14.portal.api.Features.Pdf;
 
+using EnterpriseStartup.Auth;
 using FluentErrors.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using ne14.portal.business;
@@ -24,7 +25,10 @@ public class PdfController(PdfDomainService domainService) : ControllerBase
     public async Task<Guid> UploadAsync(IFormFile file)
     {
         file.MustExist();
+
+        var user = this.User.ToEnterpriseUser();
         await using var str = file.OpenReadStream();
-        return await domainService.UploadToTriage(str, file.FileName);
+
+        return await domainService.UploadToTriage(user.Id, str, file.FileName);
     }
 }
