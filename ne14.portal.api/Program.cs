@@ -10,20 +10,21 @@ using ne14.portal.business;
 [assembly: TraceThis]
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddEnterpriseCors();
+var config = builder.Configuration;
+builder.Services.AddEnterpriseCors(config["Cors:Origins"]!.Split(','));
 builder.Services.AddEnterpriseDiscovery();
 builder.Services.AddEnterpriseErrorHandling();
 builder.Services.AddEnterpriseHealthChecks();
 builder.Services.AddEnterpriseSignalR();
-builder.Services.AddEnterpriseTelemetry(builder.Configuration);
-builder.Services.AddEnterpriseMq(builder.Configuration)
+builder.Services.AddEnterpriseTelemetry(config);
+builder.Services.AddEnterpriseMq(config)
     .AddMqProducer<PdfConversionRequiredProducer>()
     .AddMqConsumer<PdfConversionSucceededConsumer>()
     .AddMqConsumer<PdfConversionFailedConsumer>();
-builder.Services.AddEnterpriseB2C(builder.Configuration);
+builder.Services.AddEnterpriseB2C(config);
 builder.Services.AddControllers();
 
-var storageConnection = builder.Configuration["AzureClients:LocalBlob"];
+var storageConnection = config["AzureClients:LocalBlob"];
 builder.Services.AddAzureClients(opts => opts.AddBlobServiceClient(storageConnection));
 builder.Services.AddScoped<IBlobRepository, AzureBlobRepository>();
 builder.Services.AddScoped<PdfDomainService>();
@@ -33,6 +34,6 @@ app.UseEnterpriseCors();
 app.UseEnterpriseDiscovery(builder.Environment);
 app.UseEnterpriseErrorHandling();
 app.UseEnterpriseHealthChecks();
-app.UseEnterpriseB2C();
 app.UseEnterpriseSignalR();
+app.UseEnterpriseB2C();
 await app.RunAsync();
