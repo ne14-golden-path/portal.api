@@ -34,6 +34,6 @@ app.UseEnterpriseCors();
 app.UseEnterpriseDiscovery(builder.Environment);
 app.UseEnterpriseErrorHandling();
 app.UseEnterpriseHealthChecks();
-app.UseEnterpriseSignalR();
 app.UseEnterpriseB2C();
+app.UseEnterpriseSignalR();
 await app.RunAsync();

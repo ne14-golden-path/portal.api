@@ -5,6 +5,7 @@
 namespace ne14.portal.api.Features.Weather;
 
 using EnterpriseStartup.Auth;
+using EnterpriseStartup.SignalR;
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -12,7 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController(ILogger<WeatherForecastController> logger) : ControllerBase
+public class WeatherForecastController(
+    ILogger<WeatherForecastController> logger,
+    INotifier notifier) : ControllerBase
 {
     private static readonly string[] Summaries = ["Chilly", "Cool", "Mild", "Warm", "Balmy"];
 
@@ -25,6 +28,8 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     {
         var user = this.User.ToEnterpriseUser();
         logger.LogInformation("User {UserId} is getting a forecast!", user.Id);
+
+        notifier.Notify(user.Id, NoticeLevel.Success, "golden!!");
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
