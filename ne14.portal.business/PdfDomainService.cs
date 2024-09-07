@@ -24,7 +24,7 @@ public class PdfDomainService(
     public async Task<Guid> UploadToTriage(string userId, Stream input, string fileName)
     {
         var blobId = await blobRepo.UploadAsync(TriageContainer, fileName, input);
-        mqProducer.Produce(new(userId, blobId));
+        mqProducer.Produce(new(userId, fileName, blobId));
         return blobId;
     }
 }

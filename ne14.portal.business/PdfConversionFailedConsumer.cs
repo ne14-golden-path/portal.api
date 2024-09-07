@@ -37,6 +37,6 @@ public class PdfConversionFailedConsumer(
         await notifier.Notify(
             message.UserId,
             NoticeLevel.Failure,
-            $"Failed to upload: {message.FailureReason}");
+            $"Upload failed: {message.FileName} could not be converted: {message.FailureReason}");
     }
 }

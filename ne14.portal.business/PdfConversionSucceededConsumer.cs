@@ -40,6 +40,6 @@ public class PdfConversionSucceededConsumer(
         await notifier.Notify(
             message.UserId,
             NoticeLevel.Success,
-            $"Upload success!: {message.InboundBlobReference}");
+            $"Upload success!: {message.FileName} was successfully converted. New Ref: {message.OutboundBlobReference}");
     }
 }
