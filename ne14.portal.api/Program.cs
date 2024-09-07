@@ -14,8 +14,8 @@ var config = builder.Configuration;
 builder.Services.AddEnterpriseCors(config["Cors:Origins"]!.Split(','));
 builder.Services.AddEnterpriseDiscovery();
 builder.Services.AddEnterpriseErrorHandling();
-builder.Services.AddEnterpriseHealthChecks();
-builder.Services.AddEnterpriseSignalR();
+builder.Services.AddEnterpriseHealthChecks().AddAzureBlobStorage();
+builder.Services.AddEnterpriseSignalR(config);
 builder.Services.AddEnterpriseTelemetry(config);
 builder.Services.AddEnterpriseMq(config)
     .AddMqProducer<PdfConversionRequiredProducer>()
