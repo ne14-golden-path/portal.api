@@ -14,7 +14,7 @@ var config = builder.Configuration;
 builder.Services.AddEnterpriseCors(config["Cors:Origins"]!.Split(','));
 builder.Services.AddEnterpriseDiscovery();
 builder.Services.AddEnterpriseErrorHandling();
-builder.Services.AddEnterpriseHealthChecks().AddAzureBlobStorage();
+builder.Services.AddEnterpriseHealthChecks().AddAzureBlobStorage(timeout: TimeSpan.FromSeconds(5));
 builder.Services.AddEnterpriseSignalR(config);
 builder.Services.AddEnterpriseTelemetry(config);
 builder.Services.AddEnterpriseMq(config)

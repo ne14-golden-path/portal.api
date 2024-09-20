@@ -29,7 +29,7 @@ public class WeatherForecastController(
         var user = this.User.ToEnterpriseUser();
         logger.LogInformation("User {UserId} is getting a forecast!", user.Id);
 
-        notifier.Notify(user.Id, NoticeLevel.Success, "golden!!");
+        notifier.Notify(user.Id, new(NoticeLevel.Success, "ok", "golden"));
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
