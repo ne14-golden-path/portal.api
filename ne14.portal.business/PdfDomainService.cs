@@ -4,14 +4,17 @@
 
 namespace ne14.portal.business;
 
+using ne14.portal.business.Features.Blob;
+
 /// <summary>
-/// Domain service for document upload.
+/// Domain service for managing pdfs.
 /// </summary>
 public class PdfDomainService(
     IBlobRepository blobRepo,
     PdfConversionRequiredProducer mqProducer)
 {
     private const string TriageContainer = "triage";
+    private const string ConvertedContainer = "converted";
 
     /// <summary>
     /// Processes document uploads by uploading to a triage account and
@@ -23,8 +26,16 @@ public class PdfDomainService(
     /// <returns>The temporary triage id.</returns>
     public async Task<Guid> UploadToTriage(string userId, Stream input, string fileName)
     {
-        var blobId = await blobRepo.UploadAsync(TriageContainer, fileName, input);
+        var blobId = await blobRepo.UploadAsync(TriageContainer, userId, fileName, input);
         mqProducer.Produce(new(userId, fileName, blobId));
         return blobId;
     }
+
+    /// <summary>
+    /// Lists converted documents for the specified user.
+    /// </summary>
+    /// <param name="userId">The user id.</param>
+    /// <returns>A list of documents.</returns>
+    public async Task<List<BlobListing>> ListConverted(string userId)
+        => await blobRepo.ListAsync(ConvertedContainer, userId);
 }

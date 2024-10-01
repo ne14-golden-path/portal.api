@@ -6,6 +6,7 @@ using EnterpriseStartup.Extensions;
 using EnterpriseStartup.Telemetry;
 using Microsoft.Extensions.Azure;
 using ne14.portal.business;
+using ne14.portal.business.Features.Blob;
 
 [assembly: TraceThis]
 
