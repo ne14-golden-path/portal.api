@@ -38,4 +38,13 @@ public class PdfDomainService(
     /// <returns>A list of documents.</returns>
     public async Task<List<BlobListing>> ListConverted(string userId)
         => await blobRepo.ListAsync(ConvertedContainer, userId);
+
+    /// <summary>
+    /// Downloads a blob for the specified user.
+    /// </summary>
+    /// <param name="userId">The user id.</param>
+    /// <param name="blobReference">The blob reference.</param>
+    /// <returns>Blob meta.</returns>
+    public async Task<BlobMeta> Download(string userId, Guid blobReference)
+        => await blobRepo.DownloadAsync(ConvertedContainer, userId, blobReference);
 }

@@ -26,4 +26,13 @@ public interface IBlobRepository
     /// <param name="userId">The user id.</param>
     /// <returns>The listing result.</returns>
     public Task<List<BlobListing>> ListAsync(string containerName, string userId);
+
+    /// <summary>
+    /// Downloads a blob.
+    /// </summary>
+    /// <param name="containerName">The container name.</param>
+    /// <param name="userId">The user id.</param>
+    /// <param name="blobReference">The blob reference.</param>
+    /// <returns>The blob.</returns>
+    public Task<BlobMeta> DownloadAsync(string containerName, string userId, Guid blobReference);
 }

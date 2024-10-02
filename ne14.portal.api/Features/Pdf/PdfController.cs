@@ -43,4 +43,17 @@ public class PdfController(PdfDomainService domainService) : ControllerBase
         var user = this.User.ToEnterpriseUser();
         return await domainService.ListConverted(user.Id);
     }
+
+    /// <summary>
+    /// Downloads a file.
+    /// </summary>
+    /// <param name="blobReference">The blob references.</param>
+    /// <returns>File result.</returns>
+    [HttpGet("{blobReference}")]
+    public async Task<IActionResult> DownloadAsync(Guid blobReference)
+    {
+        var user = this.User.ToEnterpriseUser();
+        var blob = await domainService.Download(user.Id, blobReference);
+        return this.File(blob.Content, blob.ContentType, blob.FileName);
+    }
 }

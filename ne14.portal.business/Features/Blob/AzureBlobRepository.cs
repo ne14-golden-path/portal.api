@@ -34,13 +34,30 @@ public class AzureBlobRepository(BlobServiceClient blobService) : IBlobRepositor
     {
         var container = blobService.GetBlobContainerClient(containerName);
         var retVal = new List<BlobListing>();
-        await foreach (var blob in container.GetBlobsAsync(prefix: $"{userId}/"))
+        if (await container.ExistsAsync())
         {
-            var size = blob.Properties.ContentLength ?? 0;
-            var blobRef = Guid.Parse(blob.Name.Split('/')[^1]);
-            retVal.Add(new(blobRef, blob.Metadata["filename"], size));
+            await foreach (var blob in container.GetBlobsAsync(prefix: $"{userId}/"))
+            {
+                var size = blob.Properties.ContentLength ?? 0;
+                var blobRef = Guid.Parse(blob.Name.Split('/')[^1]);
+                retVal.Add(new(blobRef, blob.Metadata["filename"], size));
+            }
         }
 
         return retVal;
+    }
+
+    /// <inheritdoc/>
+    public async Task<BlobMeta> DownloadAsync(string containerName, string userId, Guid blobReference)
+    {
+        var container = blobService.GetBlobContainerClient(containerName);
+        var blob = container.GetBlobClient($"{userId}/{blobReference}");
+        var retVal = new MemoryStream();
+        var result = await blob.DownloadToAsync(retVal);
+        result.IsError.MustBe(false);
+
+        var props = (await blob.GetPropertiesAsync()).Value;
+        retVal.Position = 0;
+        return new(retVal, props.ContentType, props.Metadata["filename"]);
     }
 }
