@@ -12,7 +12,7 @@ using ne14.portal.business.Features.Blob;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
-builder.Services.AddEnterpriseCors(config["Cors:Origins"]!.Split(','));
+builder.Services.AddEnterpriseCors(config["Cors:Origins"]!.Split(','), ["Content-Disposition"]);
 builder.Services.AddEnterpriseDiscovery();
 builder.Services.AddEnterpriseErrorHandling();
 builder.Services.AddEnterpriseHealthChecks().AddAzureBlobStorage(timeout: TimeSpan.FromSeconds(5));
