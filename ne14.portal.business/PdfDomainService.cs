@@ -47,4 +47,13 @@ public class PdfDomainService(
     /// <returns>Blob meta.</returns>
     public async Task<BlobMeta> Download(string userId, Guid blobReference)
         => await blobRepo.DownloadAsync(ConvertedContainer, userId, blobReference);
+
+    /// <summary>
+    /// Deletes a blob for the specified user.
+    /// </summary>
+    /// <param name="userId">The user id.</param>
+    /// <param name="blobReference">The blob reference.</param>
+    /// <returns>Async task.</returns>
+    public async Task Delete(string userId, Guid blobReference)
+        => await blobRepo.DeleteAsync(ConvertedContainer, userId, blobReference);
 }

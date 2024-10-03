@@ -56,4 +56,16 @@ public class PdfController(PdfDomainService domainService) : ControllerBase
         var blob = await domainService.Download(user.Id, blobReference);
         return this.File(blob.Content, blob.ContentType, blob.FileName);
     }
+
+    /// <summary>
+    /// Deletes a file.
+    /// </summary>
+    /// <param name="blobReference">The blob reference.</param>
+    /// <returns>Async task.</returns>
+    [HttpDelete("{blobReference}")]
+    public async Task DeleteAsync(Guid blobReference)
+    {
+        var user = this.User.ToEnterpriseUser();
+        await domainService.Delete(user.Id, blobReference);
+    }
 }

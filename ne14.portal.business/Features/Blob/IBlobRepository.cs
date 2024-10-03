@@ -35,4 +35,13 @@ public interface IBlobRepository
     /// <param name="blobReference">The blob reference.</param>
     /// <returns>The blob.</returns>
     public Task<BlobMeta> DownloadAsync(string containerName, string userId, Guid blobReference);
+
+    /// <summary>
+    /// Deletes a blob.
+    /// </summary>
+    /// <param name="containerName">The container name.</param>
+    /// <param name="userId">The user id.</param>
+    /// <param name="blobReference">The blob reference.</param>
+    /// <returns>Async task.</returns>
+    public Task DeleteAsync(string containerName, string userId, Guid blobReference);
 }

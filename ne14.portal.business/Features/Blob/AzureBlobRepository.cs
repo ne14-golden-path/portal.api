@@ -60,4 +60,13 @@ public class AzureBlobRepository(BlobServiceClient blobService) : IBlobRepositor
         retVal.Position = 0;
         return new(retVal, props.ContentType, props.Metadata["filename"]);
     }
+
+    /// <inheritdoc/>
+    public async Task DeleteAsync(string containerName, string userId, Guid blobReference)
+    {
+        var container = blobService.GetBlobContainerClient(containerName);
+        var blob = container.GetBlobClient($"{userId}/{blobReference}");
+        var result = await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots);
+        result.GetRawResponse().IsError.MustBe(false);
+    }
 }
