@@ -4,13 +4,15 @@
 
 namespace ne14.portal.business;
 
-using ne14.portal.business.Features.Blob;
+using EnterpriseStartup.Blobs.Abstractions;
+using EnterpriseStartup.Utils.Pagination;
+using FluentErrors.Extensions;
 
 /// <summary>
 /// Domain service for managing pdfs.
 /// </summary>
 public class PdfDomainService(
-    IBlobRepository blobRepo,
+    IUserBlobRepository blobRepo,
     PdfConversionRequiredProducer mqProducer)
 {
     private const string TriageContainer = "triage";
@@ -21,12 +23,12 @@ public class PdfDomainService(
     /// notifying the system of the event. The process is automated thereafter.
     /// </summary>
     /// <param name="userId">The user id.</param>
-    /// <param name="input">The input.</param>
-    /// <param name="fileName">The file name.</param>
+    /// <param name="blob">The blob data.</param>
     /// <returns>The temporary triage id.</returns>
-    public async Task<Guid> UploadToTriage(string userId, Stream input, string fileName)
+    public async Task<Guid> UploadToTriage(string userId, BlobData blob)
     {
-        var blobId = await blobRepo.UploadAsync(TriageContainer, userId, fileName, input);
+        var blobId = await blobRepo.UploadAsync(TriageContainer, userId, blob, true);
+        var fileName = blob.MustExist().MetaData.FileName;
         mqProducer.Produce(new(userId, fileName, blobId));
         return blobId;
     }
@@ -35,9 +37,10 @@ public class PdfDomainService(
     /// Lists converted documents for the specified user.
     /// </summary>
     /// <param name="userId">The user id.</param>
+    /// <param name="paging">The paging request.</param>
     /// <returns>A list of documents.</returns>
-    public async Task<List<BlobListing>> ListConverted(string userId)
-        => await blobRepo.ListAsync(ConvertedContainer, userId);
+    public async Task<LazyPageResult<BlobMetaData>> ListConverted(string userId, PageRequest paging)
+        => await blobRepo.ListAsync(ConvertedContainer, userId, paging, false);
 
     /// <summary>
     /// Downloads a blob for the specified user.
@@ -45,8 +48,8 @@ public class PdfDomainService(
     /// <param name="userId">The user id.</param>
     /// <param name="blobReference">The blob reference.</param>
     /// <returns>Blob meta.</returns>
-    public async Task<BlobMeta> Download(string userId, Guid blobReference)
-        => await blobRepo.DownloadAsync(ConvertedContainer, userId, blobReference);
+    public async Task<BlobData> Download(string userId, Guid blobReference)
+        => await blobRepo.DownloadAsync(ConvertedContainer, userId, blobReference, false);
 
     /// <summary>
     /// Deletes a blob for the specified user.
@@ -55,5 +58,5 @@ public class PdfDomainService(
     /// <param name="blobReference">The blob reference.</param>
     /// <returns>Async task.</returns>
     public async Task Delete(string userId, Guid blobReference)
-        => await blobRepo.DeleteAsync(ConvertedContainer, userId, blobReference);
+        => await blobRepo.DeleteAsync(ConvertedContainer, userId, blobReference, false);
 }
