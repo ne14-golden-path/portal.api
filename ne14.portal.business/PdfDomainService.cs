@@ -5,6 +5,7 @@
 namespace ne14.portal.business;
 
 using EnterpriseStartup.Blobs.Abstractions;
+using EnterpriseStartup.SignalR;
 using EnterpriseStartup.Utils.Pagination;
 using FluentErrors.Extensions;
 
@@ -13,6 +14,7 @@ using FluentErrors.Extensions;
 /// </summary>
 public class PdfDomainService(
     IUserBlobRepository blobRepo,
+    INotifier notifier,
     PdfConversionRequiredProducer mqProducer)
 {
     private const string TriageContainer = "triage";
@@ -30,6 +32,12 @@ public class PdfDomainService(
         var blobId = await blobRepo.UploadAsync(TriageContainer, userId, blob, true);
         var fileName = blob.MustExist().MetaData.FileName;
         mqProducer.Produce(new(userId, fileName, blobId));
+
+        var payload = new { FileName = fileName, InboundBlobReference = blobId };
+        const string text = "The file has been sent for conversion.";
+        var notice = new Notice(NoticeLevel.Neutral, "Uploading File...", text, payload);
+        await notifier.Notify(userId, notice);
+
         return blobId;
     }
 
