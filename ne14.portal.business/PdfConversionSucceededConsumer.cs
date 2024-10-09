@@ -37,7 +37,7 @@ public class PdfConversionSucceededConsumer(
             message.InboundBlobReference,
             message.OutboundBlobReference);
 
-        var payload = new { message.FileName, message.OutboundBlobReference };
+        var payload = new { message.FileName, message.InboundBlobReference, message.OutboundBlobReference };
         const string text = "The file was converted.";
         var notice = new Notice(NoticeLevel.Success, "Upload Success", text, payload);
 
