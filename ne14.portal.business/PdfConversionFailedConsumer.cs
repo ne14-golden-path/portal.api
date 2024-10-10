@@ -35,7 +35,7 @@ public class PdfConversionFailedConsumer(
         logger.LogWarning("API CONSUMER REPORTED PDF CONVERSION FAILURE: {Id}", message.InboundBlobReference);
 
         var payload = new { message.FileName, message.InboundBlobReference };
-        var text = $"The file could not be converted: {message.FailureReason}";
+        var text = $"File not converted ({message.FailureReason}): {message.FileName}";
         var notice = new Notice(NoticeLevel.Failure, "Upload Failed", text, payload);
 
         await notifier.Notify(message.UserId, notice);
