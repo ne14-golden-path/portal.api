@@ -16,10 +16,10 @@ using ne14.portal.business;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class PdfController(PdfDomainService domainService) : ControllerBase
+public class PdfController(PdfDomainService domainService, IConfiguration config) : ControllerBase
 {
-    private static readonly HashSet<string> InputExtensions = new(
-        [".doc", ".docx", ".html"],
+    private readonly HashSet<string> inputExtensions = new(
+        config["App:ExtensionsForPdf"]!.Split(","),
         StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
@@ -28,11 +28,12 @@ public class PdfController(PdfDomainService domainService) : ControllerBase
     /// <param name="file">The file.</param>
     /// <returns>A temporary reference.</returns>
     [HttpPost]
+    [RequestSizeLimit(100_000_000)]
     public async Task<Guid> UploadAsync(IFormFile file)
     {
         file.MustExist();
         var ext = Path.GetExtension(file.FileName);
-        InputExtensions.Contains(ext).MustBe(true, $"Extension not supported: {ext}");
+        this.inputExtensions.Contains(ext).MustBe(true, $"Extension not supported: {ext}");
 
         var user = this.User.ToEnterpriseUser();
         await using var str = file.OpenReadStream();
