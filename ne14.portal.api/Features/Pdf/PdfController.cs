@@ -48,7 +48,7 @@ public class PdfController(PdfDomainService domainService, IConfiguration config
     /// <param name="paging">Paging request.</param>
     /// <returns>A file list.</returns>
     [HttpGet]
-    public async Task<LazyPageResult<BlobMetaData>> ListAsync([FromQuery]PageRequest paging)
+    public async Task<LazyPageResult<BlobMetaData>> ListAsync([FromQuery] PageRequest paging)
     {
         var user = this.User.ToEnterpriseUser();
         return await domainService.ListConverted(user.Id, paging);
